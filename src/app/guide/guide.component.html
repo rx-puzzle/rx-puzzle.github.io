@@ -1,0 +1,239 @@
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <button
+    *ngIf="sidenav.mode === 'over'"
+    mat-icon-button
+    [style.margin-left]="'-12px'"
+    (click)="sidenav.toggle()"
+    onclick="this.blur()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <p>Guide</p>
+</mat-toolbar>
+<mat-sidenav-container
+  [@.disabled]="sidenavAnimationDisabled"
+  [class.no-transition]="sidenavAnimationDisabled"
+>
+  <mat-sidenav #sidenav position="start">
+    <mat-tree [dataSource]="tocDataSource" [treeControl]="tocTreeControl">
+      <mat-tree-node
+        *matTreeNodeDef="let node"
+        (click)="onTocNodeClick($event)"
+        matTreeNodeToggle
+        matRipple
+      >
+        <span [style.width.px]="8 * node.depth"></span>
+        <a [attr.href]="node.href" (click)="$event.stopPropagation()">
+          {{ node.name }}
+        </a>
+      </mat-tree-node>
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: isInternalNode">
+        <div
+          class="mat-tree-node"
+          [class.is-expanded]="tocTreeControl.isExpanded(node)"
+          matRipple
+          matTreeNodeToggle
+        >
+          <span [style.width.px]="8 * node.depth"></span>
+          {{ node.name }}
+          <mat-icon>chevron_right</mat-icon>
+        </div>
+        <div [class.is-hidden]="!tocTreeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </div>
+      </mat-nested-tree-node>
+    </mat-tree>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <section>
+      <h3># Introduction > What is RxPuzzle?</h3>
+      <p>
+        It is a web app that allows you to study ReactiveX in the form of a
+        puzzle.
+      </p>
+      <p>
+        You can learn how operators work and how to use it while solving
+        puzzles.
+      </p>
+      <p>
+        Operators that can be used for puzzles are mainly combination operators
+        and time-related operators that are difficult to understand without
+        marble diagrams.
+      </p>
+      <p>
+        Some operators are missing during the gamification, but it is enough
+        help to you learn ReactiveX if you can understand operators that used
+        for puzzles.
+      </p>
+    </section>
+    <section>
+      <h3># Introduction > Glossary</h3>
+      <p>Let's define some terms for ease of explanation later.</p>
+      <dl>
+        <dt>Operator</dt>
+        <dd>It is the same as the operator in ReactiveX.</dd>
+        <dt>Sequence</dt>
+        <dd>
+          Here, it means sequence of marbles.<br />
+          This is represented in the same way as the Observable in marble
+          diagrams.
+        </dd>
+        <dt>Transformer</dt>
+        <dd>
+          It transforms input sequences into output sequences through selected
+          operator.
+        </dd>
+      </dl>
+    </section>
+    <section>
+      <h3># Introduction > How to Play</h3>
+      <p>When the stage starts, you'll see the following.</p>
+      <ul>
+        <li>One or more input sequences</li>
+        <li>One or more transformers</li>
+        <li>One goal sequence</li>
+      </ul>
+      <p>
+        To clear the stage, You must make the last output sequence same to goal
+        sequence. To do so, you need to look at input sequences and goal
+        sequence and select correct operators from transformers.
+      </p>
+      <p>
+        If press play button, transformers work with selected operator. When the
+        last output sequence timeline is filled, you can check the stage result.
+      </p>
+      <p>
+        Please note that for gamification, transformers work with additional
+        rules in some cases.
+      </p>
+    </section>
+    <section>
+      <h3># Additional Rules > Marble Combination Rules</h3>
+      <p>
+        It's kind of a marble accumulation rule. This rule exists to prevent the
+        operator from complicating the output sequence. If the operator requires
+        a function that handles multiple marbles, the function corresponding to
+        this rule applies. When combined, different rules apply to the color and
+        shape of marble, which are as follows.
+      </p>
+      <br />
+      <p>The color combination rules:</p>
+      <ol>
+        <li>
+          If two marbles have the same color, that color is the combined color.
+        </li>
+        <li>
+          If one of the two marbles is colorless, the color of the other marble
+          becomes the combined color.
+        </li>
+        <li>
+          If the two marbles are not colorless and have different colors, then
+          the colorless is the combined color.
+        </li>
+      </ol>
+      <br />
+      <p>The shape combination rules:</p>
+      <ol>
+        <li>
+          If two marbles have different shapes, the combined shape is a circle.
+        </li>
+        <li>
+          If one of the two marbles is a circle, the shape of the other marble
+          becomes the combined shape.
+        </li>
+        <li>If two marbles are circle, the combined shape is also a circle.</li>
+        <li>
+          If two marbles are same polygon, the combined shape becomes a polygon
+          with an increased number of sides.
+        </li>
+        <li>
+          If two marbles are hexagon (maximum sides), the combined shape becomes
+          a rhombus (minimum sides).
+        </li>
+      </ol>
+      <br />
+      <p>
+        Additionally, in the case of an operator that emits an array such as
+        <i>buffer</i> or <i>zip</i>, it is automatically reduced by the
+        combination rule.
+      </p>
+      <br />
+      <p>The example of the combination rule:</p>
+      <div class="example-picture">
+        <div class="scaled">
+          <rxp-sandbox
+            src="eNrtVNFOgzAU_RXT7EETTBhbgPG2MXQbGdncMhOMDwWvQAItlmI2yf59xblExcyq8Unf2nNO7j2956YVojlPKCmQVaEMsyCFYgZsAQ8lkBCQ1e4qL7iTJZwnJBoTDuwRp8jSVLUm12MOmU1LwoVcIBHF6XRfClk3FSpinItKCCkopCll9XGr_OPfwm-3CkrEvPej5ZtnRXGIS3B34q62L4yhO9Imdn_lmh3N13y9t9QvPQcd0pSLJkxYmMIrtm54Hkho8JfrSHt4w7KYZkFZHG-fA-E4ouS4gRjWH4lCKZdNH79l8_06fLYFg5Htz83-ZDXRNW3gTD2789MtkMg2_GP5y7xQqkFTJJc-Z5gU95RlwJrfwHJkqkZ3MexdXxlzb2YKBc2BYU6ZCxshfUryU9xSToLWWV12B0Rc6Fk"
+            mode="picture"
+          ></rxp-sandbox>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h3># Additional Rules > Sequence Clipping Rules</h3>
+      <p>
+        This rule exists for clipping unseen marbles in the output sequence,
+        such as if that exceeds max length or has multiple marbles at a specific
+        time.
+      </p>
+      <p>
+        This rule ensures that only visible marbles exist in the sequence.
+        However, it is recommended to avoid situations in which this rule
+        applies when making a stage. Because a player may be confused as the
+        transformer work differently in specific cases.
+      </p>
+      <p>
+        This rule can occur with merge-related operators and concat-related
+        operators. The following figures are examples of situations in which the
+        rule applies, and the x-marked marble means the marble that is removed
+        by the rule.
+      </p>
+      <br />
+      <p>The case it exceeds max length:</p>
+      <div class="example-picture">
+        <div class="scaled">
+          <rxp-sandbox
+            src="eNrtk11LwzAYhf-KvOxCoUJazT56Zz-mm2yMFTqdeJHW163QJjVJxVH235c6B4Jsol66u-Scwwmch9QgSp0JrsCtoWAyyVFNUEb4UiFPEVz70vrQwyLTOuOLAdcoX1kOrkNIY74NNBa-qLg2caMsBMtH2ypwH2pQS1aaJgALUpEL2RzX1lH_lf64tiAze2-n1av3hNrhMt6TuRO7T_3ZfNoOSExD2h1P_M7VcBx3AtjR_B9o5FIUSaU-2c1i5-znob9CO8zqjvSve4HT9mjU9To96kX2vbeHVZrJNMd97x52j_o3dLRkXD0LWaD8-plu7NCJnWh6MZtTMhraJiFKlEwLeYurZnzBU6ZPWcs6SVpnTfMGUgKeVQ"
+            mode="picture"
+          ></rxp-sandbox>
+        </div>
+      </div>
+      <div class="example-picture">
+        <div class="scaled">
+          <rxp-sandbox
+            src="eNrtk11LwzAYhf-KvOxCoUJazT56Zz-mm2yMFTqdeJHW163QJjVJxVH235c6B4Jsfty6u-Scwwmch9QgSp0JrsCtoWAyyVFNUEb4UiFPEVz70vrQwyLTOuOLAdcoX1kOrkNIY74NNBa-qLg2caMsBMtH2ypwH2pQS1aaJgALUpEL2RzX1lH_k_64tiAze2-n1av3hNrhMt6TuRO7T_3ZfNoOSExD2h1P_M7VcBx3AtjR_N9o5FIUSaU-2c2S5-z3oZ9CO8zqjvSve4HT9mjU9To96kX2vbeHVZrJNMd97x52j_o3dLRkXD0LWaD8-plu7NCJnWh6MZtTMhraJiFKlEwLeYurZnzBU6ZPWcs6SVpnTfMGCWqeVQ"
+            mode="picture"
+          ></rxp-sandbox>
+          <rxp-marble
+            [marble]="{ shape: 'circle', color: '' }"
+            [class.should-remove]="true"
+            class="clipped-by-concat"
+          ></rxp-marble>
+        </div>
+      </div>
+      <br />
+      <p>The case it has multiple marbles at a specific time:</p>
+      <div class="example-picture">
+        <div class="scaled">
+          <rxp-sandbox
+            src="eNrtk19LwzAUxb-KXPagUKEp67R9G2W163BYKq1_8CGt167QJjVJxVH23Zc6Bw4Vda_uLTn35NzL_ZEOeKNKziS4HdRUZBXKKxQxPrfIcgSXDI13fVKXSpWsmDKF4oVW4Fqm2Rdfpwprj7dMabtWCk6ry00UuPcdyAVtdBKAATmvuOiPK-Og76U_rAwo9b43q1XLN4fc4tK1R303iW97iT2_Hoe246S3YRxZWhp5BLY0d9GIBa-zVn7o1Cef5jtz_Mp0gPY1tB9YjUjiR4GXjpObdOb7QTKfRN-w-uskeSnyCver_js6SlAmn7ioUXz-TMFZQqy7aOhE52FKLmLt4A0KqriY4VJb9asCj-nAOMoGJ33wGiPanrk"
+            mode="picture"
+          ></rxp-sandbox>
+        </div>
+      </div>
+      <div class="example-picture">
+        <div class="scaled">
+          <rxp-sandbox
+            src="eNrtk19rgzAUxb_KuPRhAwdGajd9K1JnLSsTh-4Pe4juzgqauCSOFel3b1xbWNnKRp_7lpx7cu7l_kgHvFElZxLcDmoqsgrlHYoY31tkOYJLhsZWn9SlUiUrpkyh-KAVuJZp9sXPqcLa4y1T2q6VgtPqdhMF7nMHckEbnQRgQM4rLvrjyjjpR-kvKwNKve_NatXyyyF3uHTtVd9N4tteYs_vx6HtOOljGEeWlkYegR3NfTRiweusld869cmX-d4c_zKdoP0O7Q9WI5L4UeCl4-Qhnfl-kMwn0QFWhzrmpcgrPK56orOlowRl8o2LGsXPzxRcJcR6ioZOdB2m5CbWDt6goIqLGS61Vb8q8JwOjLNscNEHrwFFCp65"
+            mode="picture"
+          ></rxp-sandbox>
+          <rxp-marble
+            [marble]="{ shape: 'circle', color: '' }"
+            [class.should-remove]="true"
+            class="clipped-by-merge"
+          ></rxp-marble>
+        </div>
+      </div>
+    </section>
+    <footer></footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

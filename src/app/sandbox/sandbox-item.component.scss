@@ -1,0 +1,159 @@
+:host {
+  --common-action-bar-height: 48px;
+  --transformer-content-height: 150px;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: fit-content;
+  border-radius: 4px;
+  margin: 4px 0px;
+  background: var(--theme-card);
+}
+
+:host rxp-marble-sequence {
+  width: 100%;
+}
+
+:host(.ng-animating) {
+  pointer-events: none;
+}
+
+.left-touch-zone {
+  position: absolute;
+  left: 0px;
+  width: 28px;
+  height: 100%;
+  background: transparent;
+}
+
+.right-touch-zone {
+  position: absolute;
+  right: 0px;
+  width: 56px;
+  height: 100%;
+  background: transparent;
+}
+
+.panel-header,
+.panel-content,
+.panel-footer {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding: 0px 24px;
+}
+
+:host(.is-expandable) .panel-header {
+  cursor: pointer;
+}
+
+:host(.is-sequence) .panel-header {
+  height: 48px;
+}
+
+:host(.is-transformer) .panel-header {
+  height: 56px;
+}
+
+.panel-content {
+  overflow: hidden;
+  transition-property: opacity, height;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+  pointer-events: none;
+  opacity: 0;
+  height: 0px;
+}
+
+.panel-footer {
+  height: fit-content;
+}
+
+:host(.is-sequence.is-expanded) .panel-content {
+  pointer-events: auto;
+  opacity: 1;
+  height: var(--common-action-bar-height);
+}
+
+:host(.is-transformer.is-expanded) .panel-content {
+  pointer-events: auto;
+  opacity: 1;
+  height: calc(
+    var(--transformer-content-height) + var(--common-action-bar-height)
+  );
+}
+
+:host(.is-transformer.is-expanded:not(.is-editable)) .panel-content {
+  height: var(--transformer-content-height);
+}
+
+.common-action-bar {
+  flex: initial;
+  display: flex;
+  align-items: center;
+  height: var(--common-action-bar-height);
+}
+
+.transformer-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+
+  transition-property: font-size, font-weight, opacity;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+
+  div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    flex: auto;
+    span {
+      margin-left: 2px;
+    }
+  }
+
+  button {
+    flex: none;
+  }
+}
+
+:host(.is-expanded) .transformer-header {
+  font-size: 16px;
+  font-weight: bold;
+  span {
+    opacity: 0.3;
+  }
+}
+
+.transformer-content {
+  flex: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .description {
+    flex: auto;
+    height: 100%;
+    p {
+      margin: 2px 0px 0px;
+    }
+  }
+
+  .action-bar {
+    flex: 0 0;
+  }
+}
+
+.transformer-output {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 48px;
+}

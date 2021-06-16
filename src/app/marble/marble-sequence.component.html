@@ -1,0 +1,68 @@
+<ng-template #arrowHead>
+  <svg viewBox="0 -50 100 100">
+    <polygon points="0,50 100,0 0,-50" />
+  </svg>
+</ng-template>
+
+<div class="timeline">
+  <hr />
+  <ng-container *ngTemplateOutlet="arrowHead"></ng-container>
+</div>
+
+<div
+  class="progress"
+  [style.fill]="timelineColor"
+  [style.stroke]="timelineColor"
+  [style.clip-path]="progressClipPath"
+>
+  <hr [style.background]="timelineColor" />
+  <ng-container *ngTemplateOutlet="arrowHead"></ng-container>
+</div>
+
+<div #endMarker class="end-marker" [style.background]="timelineColor"></div>
+
+<div
+  cdkDropList
+  class="can-drag-marble"
+  cdkDropListOrientation="horizontal"
+  [cdkDropListData]="marbles"
+  [cdkDropListEnterPredicate]="onDropListEnterPredicate.bind(this)"
+  (cdkDropListEntered)="onDropListEntered($event)"
+  (cdkDropListExited)="onDropListExited($event)"
+>
+  <ng-container *ngIf="!isEditable">
+    <rxp-marble
+      *ngFor="let marble of marbles; index as n"
+      [@zoomIn]="n <= indexInProgress"
+      [marble]="marble"
+      [style.width.px]="marbleSize"
+      [style.height.px]="marbleSize"
+      [style.visibility]="marble.shape ? null : 'hidden'"
+    ></rxp-marble>
+  </ng-container>
+  <ng-container *ngIf="isEditable">
+    <rxp-marble
+      *ngFor="let marble of marbles; index as n"
+      @fadeOutLeft
+      [marble]="marble"
+      [indicatorColor]="timelineColor"
+      [style.width.px]="marbleSize"
+      [style.height.px]="marbleSize"
+      cdkDrag
+      rxpDrop
+      [cdkDragData]="marble"
+      (cdkDragStarted)="onDragStarted($event)"
+      (cdkDragStarted)="dragStarted.emit($event)"
+      (cdkDragEnded)="dragEnded.emit($event)"
+    ></rxp-marble>
+    <ng-container *ngFor="let marble of overflowedMarbles">
+      <rxp-marble
+        [@fadeOutLeft]="'overflowed'"
+        [marble]="marble"
+        [indicatorColor]="timelineColor"
+        [style.width.px]="marbleSize"
+        [style.height.px]="marbleSize"
+      ></rxp-marble>
+    </ng-container>
+  </ng-container>
+</div>

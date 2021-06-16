@@ -1,0 +1,91 @@
+:host {
+  --timeline-width: 3px;
+  --arrowhead-size: 9px;
+
+  position: relative;
+  display: flex;
+  justify-items: flex-start;
+  align-items: center;
+  height: 56px;
+}
+
+@mixin timeline($color) {
+  position: absolute;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  stroke: $color;
+  fill: $color;
+
+  > hr {
+    width: calc(100% - var(--arrowhead-size));
+    height: var(--timeline-width);
+    border: 0;
+    background: $color;
+  }
+
+  > svg {
+    width: var(--arrowhead-size);
+    height: var(--arrowhead-size);
+  }
+}
+
+.timeline {
+  @include timeline(var(--theme-slider-off));
+}
+
+.progress {
+  @include timeline(var(--theme-accent));
+}
+
+.end-marker {
+  position: absolute;
+  display: block;
+  border: 0;
+  width: 2px;
+  background: var(--theme-accent);
+  transition: transform 225ms var(--theme-standard-easing);
+  transform: scale(1, 0);
+}
+
+.cdk-drop-list {
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 3px;
+}
+
+rxp-marble {
+  transition: none;
+}
+
+.cdk-drag-placeholder {
+  transition-property: transform, margin, opacity;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+}
+
+.cdk-drop-list-dragging > .cdk-drag:not(.cdk-drag-placeholder) {
+  transition: transform 225ms var(--theme-standard-easing);
+}
+
+.cdk-drag-animating {
+  transition: transform 225ms var(--theme-standard-easing);
+}
+
+.cdk-drag-animating.cdk-drag-preview.rxp-drop-outside {
+  transition: opacity 225ms linear, transform 0ms linear 255ms;
+  opacity: 0;
+}

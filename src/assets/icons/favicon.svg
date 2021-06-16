@@ -1,0 +1,17 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="64"
+  height="64"
+  viewBox="-100 -100 200 200"
+  stroke="white"
+  stroke-width="16"
+>
+  <polygon
+    fill="#009688"
+    points="-45.00,-77.94 45.00,-77.94 90.00,-0.00 45.00,77.94 -45.00,77.94 -90.00,0.00 -45.00,-77.94"
+  />
+  <polygon
+    fill="white"
+    points="20,0 -10,-17.32 -10,17.32"
+  />
+</svg>

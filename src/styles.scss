@@ -1,0 +1,117 @@
+@use '~@angular/material/theming' as *;
+
+.no-transition,
+.no-transition * {
+  transition: none !important;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+rxp-app > div > rxp-sandbox {
+  width: 100%;
+  height: 100%;
+}
+
+@include mat-core();
+
+// prettier-ignore
+@mixin theme-variables($theme) {
+  $primary:    map-get($theme, primary);
+  $accent:     map-get($theme, accent);
+  $warn:       map-get($theme, warn);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  --theme-standard-easing:    cubic-bezier(0.4, 0.0, 0.2, 1);
+  --theme-decelerated-easing: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --theme-accelerated-easing: cubic-bezier(0.4, 0.0, 1.0, 1);
+
+  --theme-primary:                  #{mat-color($primary, default)};
+  --theme-primary-lighter:          #{mat-color($primary, lighter)};
+  --theme-primary-darker:           #{mat-color($primary, darker)};
+  --theme-primary-text:             #{mat-color($primary, text)};
+  --theme-primary-contrast:         #{mat-color($primary, default-contrast)};
+  --theme-primary-lighter-contrast: #{mat-color($primary, lighter-contrast)};
+  --theme-primary-darker-contrast:  #{mat-color($primary, darker-contrast)};
+
+  --theme-accent:                  #{mat-color($accent, default)};
+  --theme-accent-lighter:          #{mat-color($accent, lighter)};
+  --theme-accent-darker:           #{mat-color($accent, darker)};
+  --theme-accent-text:             #{mat-color($accent, text)};
+  --theme-accent-contrast:         #{mat-color($accent, default-contrast)};
+  --theme-accent-lighter-contrast: #{mat-color($accent, lighter-contrast)};
+  --theme-accent-darker-contrast:  #{mat-color($accent, darker-contrast)};
+
+  --theme-warn:                  #{mat-color($warn, default)};
+  --theme-warn-lighter:          #{mat-color($warn, lighter)};
+  --theme-warn-darker:           #{mat-color($warn, darker)};
+  --theme-warn-text:             #{mat-color($warn, text)};
+  --theme-warn-contrast:         #{mat-color($warn, default-contrast)};
+  --theme-warn-lighter-contrast: #{mat-color($warn, lighter-contrast)};
+  --theme-warn-darker-contrast:  #{mat-color($warn, darker-contrast)};
+
+  --theme-is-dark: #{map-get($theme, is-dark)};
+
+  --theme-foreground:        #{mat-color($foreground, base)};
+  --theme-divider:           #{mat-color($foreground, divider)};
+  --theme-dividers:          #{mat-color($foreground, dividers)};
+  --theme-disabled:          #{mat-color($foreground, disabled)};
+  --theme-disabled-button:   #{mat-color($foreground, disabled-button)};
+  --theme-disabled-text:     #{mat-color($foreground, disabled-text)};
+  --theme-elevation:         #{mat-color($foreground, elevation)};
+  --theme-hint-text:         #{mat-color($foreground, hint-text)};
+  --theme-secondary-text:    #{mat-color($foreground, secondary-text)};
+  --theme-icon:              #{mat-color($foreground, icon)};
+  --theme-icons:             #{mat-color($foreground, icons)};
+  --theme-text:              #{mat-color($foreground, text)};
+  --theme-slider-min:        #{mat-color($foreground, slider-min)};
+  --theme-slider-off:        #{mat-color($foreground, slider-off)};
+  --theme-slider-off-active: #{mat-color($foreground, slider-off-active)};
+
+  --theme-status-bar:           #{mat-color($background, status-bar)};
+  --theme-app-bar:              #{mat-color($background, app-bar)};
+  --theme-background:           #{mat-color($background, background)};
+  --theme-hover:                #{mat-color($background, hover)};
+  --theme-card:                 #{mat-color($background, card)};
+  --theme-dialog:               #{mat-color($background, dialog)};
+  --theme-disabled-button-alt:  #{mat-color($background, disabled-button)};
+  --theme-raised-button:        #{mat-color($background, raised-button)};
+  --theme-focused-button:       #{mat-color($background, focused-button)};
+  --theme-selected-button:      #{mat-color($background, selected-button)};
+  --theme-selected-disabled-button:
+                                #{mat-color($background, selected-disabled-button)};
+  --theme-disabled-button-toggle:
+                                #{mat-color($background, disabled-button-toggle)};
+  --theme-unselected-chip:      #{mat-color($background, unselected-chip)};
+  --theme-disabled-list-option: #{mat-color($background, disabled-list-option)};
+  --theme-tooltip:              #{mat-color($background, tooltip)};
+}
+
+$dark-theme: mat-dark-theme(
+  mat-palette($mat-teal),
+  mat-palette($mat-amber, A200, A100, A400)
+);
+
+$light-theme: mat-light-theme(
+  mat-palette($mat-teal),
+  mat-palette($mat-pink, A200, A100, A400)
+);
+
+.rxp-light-theme {
+  @include angular-material-theme($light-theme);
+  @include theme-variables($light-theme);
+}
+
+.rxp-dark-theme {
+  @include angular-material-theme($dark-theme);
+  @include theme-variables($dark-theme);
+}

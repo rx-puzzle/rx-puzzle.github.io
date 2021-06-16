@@ -1,0 +1,185 @@
+<mat-toolbar
+  *ngIf="isEditMode"
+  color="primary"
+  class="toolbar mat-elevation-z4"
+>
+  <p>Sandbox</p>
+  <span style="flex: auto"></span>
+  <button
+    mat-icon-button
+    [disabled]="!canUndo || sidenav.opened"
+    (click)="onUndoButtonClick()"
+  >
+    <mat-icon>undo</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    [disabled]="!canRedo || sidenav.opened"
+    (click)="onRedoButtonClick()"
+  >
+    <mat-icon>redo</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    [disabled]="sidenav.opened"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onCollapseAllMenuClick()">
+      Collapse All
+    </button>
+    <a
+      mat-menu-item
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      onclick="this.blur()"
+      (click)="onPlayStageMenuClick($event)"
+    >
+      Play Stage
+    </a>
+    <button mat-menu-item (click)="onSaveMenuClick()">Save</button>
+    <button mat-menu-item (click)="onExportAsStageUrlMenuClick()">
+      Export As Stage URL
+    </button>
+    <button mat-menu-item (click)="onExportAsPictureUrlMenuClick()">
+      Export As Picture URL
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-sidenav-container
+  class="content-border"
+  [@.disabled]="isPictureMode"
+  [class.no-transition]="isPictureMode"
+>
+  <mat-sidenav class="sidenav" mode="over" position="end" #sidenav>
+    <mat-action-list>
+      <ng-container *ngFor="let opKey of selectableOperatorKeys">
+        <button
+          mat-list-item
+          tabindex="-1"
+          (click)="selectOperatorAndClose(opKey)"
+        >
+          <div class="operator-label">{{ getOperatorLabel(opKey) }}</div>
+        </button>
+      </ng-container>
+    </mat-action-list>
+  </mat-sidenav>
+  <mat-sidenav-content
+    class="content"
+    cdkDropListGroup
+    [class.no-transition]="contentAnimationDisabled"
+    [@.disabled]="contentAnimationDisabled"
+    [class.is-picture-mode]="isPictureMode"
+  >
+    <div class="padding"></div>
+    <div *ngIf="isPlayMode && hint" class="hint">
+      <mat-icon fontSet="material-icons-outlined">wb_incandescent</mat-icon>
+      <p>{{ hint }}</p>
+    </div>
+    <div class="sandbox-items">
+      <ng-container
+        *ngFor="let _ of sandbox.items; index as n; trackBy: trackByItemId"
+      >
+        <rxp-sandbox-item
+          class="mat-elevation-z2"
+          @fadeInDown
+          @fadeOutUp
+          [sandbox]="sandbox"
+          [index]="n"
+          (itemsChange)="onItemsChange($event)"
+          [isPlaying]="isPlaying"
+          [playProgress]="playProgress"
+          [isEditable]="isEditMode"
+        ></rxp-sandbox-item>
+      </ng-container>
+    </div>
+    <button
+      *ngIf="isPlayMode"
+      class="play-button"
+      mat-fab
+      (click)="onPlayButtonClick()"
+      [color]="playEnded && !isCleared ? 'warn' : 'primary'"
+    >
+      <mat-icon *ngIf="!isPlaying && playtime === 0">play_arrow</mat-icon>
+      <mat-icon *ngIf="!isPlaying && playtime !== 0">replay</mat-icon>
+      <mat-icon *ngIf="isPlaying">stop</mat-icon>
+    </button>
+    <div
+      class="goal-marbles mat-elevation-z2"
+      [style.visibility]="isPlayMode ? null : 'hidden'"
+      [style.height]="isPlayMode ? null : '0px'"
+    >
+      <div *ngIf="playEnded" @fadeIn @fadeOut class="play-result">
+        <mat-icon
+          [color]="isCleared ? 'primary' : 'warn'"
+          [svgIcon]="isCleared ? 'equal' : 'not-equal'"
+        ></mat-icon>
+        <span style="flex: 0 0 50%"></span>
+        <mat-icon [color]="isCleared ? 'primary' : 'warn'">
+          {{ isCleared ? "done" : "clear" }}
+        </mat-icon>
+      </div>
+      <rxp-marble-sequence
+        #goalSequence
+        [isEditable]="false"
+        [marbles]="sandbox.options.goalMarbles"
+        (marblesChange)="onGoalMarblesChange($event)"
+        [fixedLength]="sandbox.options.marblesPerSequence"
+        [marbleSize]="cssNum('--marble-size')"
+        [timelineColor]="cssStr('--goal-timeline-color')"
+        [progress]="1"
+      ></rxp-marble-sequence>
+    </div>
+    <div class="padding" [class.is-edit-mode]="isEditMode"></div>
+    <div *ngIf="isEditMode" class="palette-space">
+      <div
+        class="palette mat-elevation-z4"
+        [class.is-expanded]="paletteExpanded"
+        (touchmove)="$event.preventDefault()"
+      >
+        <button
+          mat-button
+          tabindex="-1"
+          class="mat-elevation-z2"
+          (click)="paletteExpanded = !paletteExpanded"
+        >
+          <mat-icon>
+            {{ paletteExpanded ? "expand_more" : "expand_less" }}
+          </mat-icon>
+          Palette
+        </button>
+        <rxp-marble-palette
+          [cols]="cssNum('--palette-cols')"
+          [gutterSize]="cssNum('--palette-gutter-size')"
+          [rowHeight]="cssNum('--palette-row-height')"
+          [marbleSize]="cssNum('--marble-size')"
+        ></rxp-marble-palette>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<div
+  class="on-sandbox-url-exported"
+  style="display: none"
+  data-message="Sandbox URL copied to the clipboard."
+  data-action="OK"
+  data-duration="3000"
+></div>
+<div
+  class="on-stage-url-exported"
+  style="display: none"
+  data-message="Stage URL copied to the clipboard."
+  data-action="OK"
+  data-duration="3000"
+></div>
+<div
+  class="on-picture-url-exported"
+  style="display: none"
+  data-message="Picture URL copied to the clipboard."
+  data-action="OK"
+  data-duration="3000"
+></div>

@@ -1,0 +1,234 @@
+@function get-palette-height($row-count) {
+  @if type-of($row-count) != number or not unitless($row-count) {
+    @error '$row-count must be a unitless number';
+  }
+  $c: $row-count;
+  $b: var(--palette-button-height);
+  $h: var(--palette-row-height);
+  $g: var(--palette-gutter-size);
+  @return calc(#{$b} + #{$c} * (#{$h} + #{$g}) + #{$g});
+}
+
+:host {
+  --marble-size: 22px;
+  --sandbox-item-width: 392px;
+
+  --palette-cols: 8;
+  --palette-gutter-size: 2px;
+  --palette-row-height: 40px;
+
+  --palette-button-height: 56px;
+  --palette-width: min(max(100%, 360px), 500px);
+  --palette-height: #{get-palette-height(2)};
+
+  --input-timeline-color: var(--theme-accent);
+  --output-timeline-color: var(--theme-text);
+  --goal-timeline-color: var(--theme-accent);
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+  * {
+    user-select: none;
+  }
+}
+
+.toolbar {
+  flex: none;
+  z-index: 4;
+  height: 56px;
+}
+
+.content-border {
+  flex: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.sidenav {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  width: calc(100% - 56px);
+  max-width: calc(400px - 56px);
+
+  .operator-label {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.mat-drawer-container {
+  background: unset;
+}
+
+.content {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &.is-picture-mode {
+    overflow-y: hidden;
+  }
+
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sandbox-items {
+  flex: none;
+  width: fit-content;
+  height: fit-content;
+}
+
+rxp-sandbox-item {
+  transition-property: transform, margin, opacity, top;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+  width: var(--sandbox-item-width);
+}
+
+.play-button {
+  flex: none;
+  position: sticky;
+  bottom: 0px;
+  margin: 8px auto;
+}
+
+.play-result {
+  position: absolute;
+  width: 100%;
+  height: 24px;
+  left: 0px;
+  top: -48px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  pointer-events: none;
+
+  mat-icon {
+    flex: 0 0 24px;
+  }
+}
+
+.goal-marbles {
+  flex: none;
+  position: relative;
+  box-sizing: border-box;
+  width: var(--sandbox-item-width);
+  margin: 4px 0px;
+  padding: 0px 24px;
+  background: var(--theme-card);
+  border-radius: 4px;
+  rxp-marble-sequence {
+    width: 100%;
+  }
+}
+
+.padding {
+  flex: none;
+  width: var(--sandbox-item-width);
+  height: 16px;
+}
+
+.padding.is-edit-mode {
+  flex: 1 0 auto;
+  height: calc(16px + var(--palette-height));
+}
+
+.hint {
+  box-sizing: border-box;
+  width: var(--sandbox-item-width);
+  height: auto;
+  border: solid 0px var(--theme-accent);
+  border-left-width: 4px;
+  margin: 8px 0px;
+  background: var(--theme-hover);
+
+  display: flex;
+
+  mat-icon {
+    color: var(--theme-accent);
+    margin: 0 12px;
+    justify-self: center;
+    align-self: center;
+  }
+  p {
+    font-style: italic;
+    color: var(--theme-accent);
+  }
+}
+
+.palette-space {
+  pointer-events: none;
+  flex: none;
+  align-self: flex-end;
+  width: var(--palette-width);
+  height: var(--palette-height);
+  position: sticky;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+.palette {
+  pointer-events: auto;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  width: var(--palette-width);
+  height: var(--palette-height);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--theme-background);
+}
+
+.palette {
+  border-radius: 0 0 0 0;
+  transition-property: border-radius, transform;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+}
+
+.palette:not(.is-expanded) {
+  --tx: calc(var(--palette-width) - 110px);
+  --ty: calc(var(--palette-height) - var(--palette-button-height));
+
+  border-radius: 28px 0 0 0;
+  transform: translate(var(--tx), var(--ty));
+}
+
+.palette > * {
+  flex: none;
+}
+
+.palette > button {
+  position: relative;
+  text-align: left;
+  border-radius: 0 0 0 0;
+  width: var(--palette-width);
+  min-height: var(--palette-button-height);
+  background: var(--theme-primary);
+  color: var(--theme-primary-contrast);
+}
+
+.palette > rxp-marble-palette {
+  z-index: 0;
+  box-sizing: border-box;
+  padding: var(--palette-gutter-size);
+  width: var(--palette-width);
+  height: calc(var(--palette-height) - var(--palette-button-height));
+}

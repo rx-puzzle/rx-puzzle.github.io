@@ -1,0 +1,54 @@
+$breakpoint-width: 599px;
+
+:host {
+  height: 56px;
+  @media (max-width: $breakpoint-width) {
+    height: 80px;
+  }
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  background: var(--theme-primary);
+  color: var(--theme-primary-contrast);
+}
+
+.mat-icon[svgicon=favicon] {
+  margin-left: -8px;
+  --size: 20px;
+  font-size: var(--size);
+  line-height: var(--size);
+  width: var(--size);
+  height: var(--size);
+}
+
+.left {
+  order: 0;
+  flex: auto;
+}
+
+.center {
+  order: 1;
+  flex: none;
+
+  @media (max-width: $breakpoint-width) {
+    order: 3;
+    flex: auto;
+    width: 100%;
+  }
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  > .mat-button {
+    flex: 1 1 auto;
+  }
+}
+
+.right {
+  order: 2;
+  flex: initial;
+  margin-left: 16px;
+}

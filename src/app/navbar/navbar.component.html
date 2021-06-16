@@ -1,0 +1,26 @@
+<nav class="left">
+  <a mat-button routerLink="/">
+    <mat-icon svgIcon="favicon"></mat-icon>
+    RxPuzzle
+  </a>
+</nav>
+
+<nav class="center">
+  <a mat-button routerLink="/stages">Stages</a>
+  <a mat-button routerLink="/sandbox">Sandbox</a>
+  <a mat-button routerLink="/guide">Guide</a>
+</nav>
+
+<nav class="right">
+  <button mat-icon-button (click)="toggleTheme()">
+    <mat-icon *ngIf="theme === 'rxp-light-theme'">brightness_4</mat-icon>
+    <mat-icon *ngIf="theme !== 'rxp-light-theme'">brightness_7</mat-icon>
+  </button>
+  <a
+    mat-icon-button
+    target="_blank"
+    href="https://github.com/rx-puzzle/rx-puzzle.github.io"
+  >
+    <mat-icon svgIcon="github"></mat-icon>
+  </a>
+</nav>

@@ -1,0 +1,164 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+}
+
+mat-toolbar {
+  z-index: 4;
+  flex: none;
+  height: 56px;
+}
+
+mat-sidenav-container {
+  z-index: 0;
+  flex: auto;
+  height: fit-content;
+}
+
+mat-sidenav {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  width: 250px;
+
+  &.mat-drawer-side {
+    background: var(--theme-background);
+  }
+
+  mat-tree {
+    background: inherit;
+  }
+}
+
+mat-sidenav-content {
+  scroll-behavior: smooth;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > section {
+    flex: auto;
+    width: min(max(70%, 300px), 700px);
+    margin-bottom: 2rem;
+  }
+
+  > footer {
+    flex: none;
+    width: 100%;
+    height: 2rem;
+    background: var(--theme-primary);
+  }
+}
+
+.mat-tree-node {
+  padding-left: 8px;
+  min-height: 0px;
+  height: 40px;
+  color: var(--theme-secondary-text);
+
+  > .mat-icon {
+    position: absolute;
+    right: 0px;
+  }
+
+  &:hover {
+    background: var(--theme-hover);
+    color: var(--theme-text);
+  }
+
+  a {
+    pointer-events: none;
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.is-selected {
+  color: var(--theme-accent);
+}
+
+.mat-tree-node {
+  transition-property: opacity, height;
+  transition-duration: 100ms;
+  transition-timing-function: var(--theme-standard-easing);
+}
+
+.mat-tree-node > .mat-icon {
+  transition: transform 100ms var(--theme-standard-easing);
+  transform: rotate(90deg);
+}
+
+.is-hidden .mat-tree-node {
+  pointer-events: none;
+  opacity: 0;
+  height: 0px;
+}
+
+.mat-tree-node:not(.is-expanded) > .mat-icon {
+  transform: none;
+}
+
+[aria-level="1"].mat-tree-node,
+[aria-level="1"] > .mat-tree-node {
+  font-size: 1rem;
+}
+
+rxp-marble {
+  width: 22px;
+  height: 22px;
+}
+
+dt {
+  font-weight: bolder;
+}
+
+dd {
+  margin-left: unset;
+  margin-bottom: 8px;
+  padding-left: 16px;
+}
+
+ul, ol {
+  padding-left: 24px;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+.example-picture  {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 8px;
+  border: var(--theme-secondary-text) solid 2px;
+  margin: 0 0 16px;
+  background: var(--theme-hover);
+
+  .scaled {
+    margin: -40px 0px -40px;
+    transform: scale(0.75);
+  }
+
+  .clipped-by-merge {
+    position: absolute;
+    z-index: 1;
+    top: 218px;
+    left: 49px;
+  }
+
+  .clipped-by-concat {
+    position: absolute;
+    z-index: 1;
+    top: 218px;
+    left: 335px;
+  }
+}
+
+

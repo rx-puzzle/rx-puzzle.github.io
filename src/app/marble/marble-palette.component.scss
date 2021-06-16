@@ -1,0 +1,62 @@
+:host {
+  position: relative;
+  width: 300px;
+  height: 100px;
+  background: var(--theme-hover);
+}
+
+.mat-grid-list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.mat-grid-tile {
+  transition-property: top, right, bottom, left, width, height;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+  background: var(--theme-card);
+}
+
+.cdk-drop-list {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cdk-drop-list > .placeholder {
+  position: absolute;
+  opacity: 0.5;
+}
+
+.cdk-drop-list.cdk-drop-list-dragging > .placeholder {
+  opacity: 0;
+}
+
+rxp-marble {
+  transition: none;
+}
+
+.cdk-drag-placeholder {
+  transition-property: transform, margin, opacity;
+  transition-duration: 225ms;
+  transition-timing-function: var(--theme-standard-easing);
+}
+
+.cdk-drop-list-dragging > .cdk-drag:not(.cdk-drag-placeholder) {
+  transition: transform 225ms var(--theme-standard-easing);
+}
+
+.cdk-drag-animating {
+  transition: transform 225ms var(--theme-standard-easing);
+}
+
+.cdk-drag-animating.cdk-drag-preview.rxp-drop-outside {
+  transition: opacity 225ms linear, transform 0ms linear 255ms;
+  opacity: 0;
+}

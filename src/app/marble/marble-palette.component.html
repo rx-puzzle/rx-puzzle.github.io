@@ -1,0 +1,32 @@
+<mat-grid-list
+  [cols]="cols"
+  [gutterSize]="gutterSize + 'px'"
+  [rowHeight]="rowHeight"
+>
+  <mat-grid-tile *ngFor="let box of marbleBoxes">
+    <div
+      cdkDropList
+      class="can-drag-marble"
+      [cdkDropListData]="box"
+      [cdkDropListEnterPredicate]="dontEnter"
+    >
+      <ng-container *ngFor="let marble of box">
+        <rxp-marble
+          class="placeholder"
+          [marble]="marble"
+          [style.width.px]="marbleSize"
+          [style.height.px]="marbleSize"
+        ></rxp-marble>
+        <rxp-marble
+          cdkDrag
+          rxpDrop
+          [marble]="marble"
+          [cdkDragData]="marble"
+          (cdkDragDropped)="onDragDropped($event)"
+          [style.width.px]="marbleSize"
+          [style.height.px]="marbleSize"
+        ></rxp-marble>
+      </ng-container>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
