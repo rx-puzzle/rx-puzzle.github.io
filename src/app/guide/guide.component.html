@@ -171,9 +171,9 @@
     <section>
       <h3># Additional Rules > Sequence Clipping Rules</h3>
       <p>
-        This rule exists for clipping unseen marbles in the output sequence,
-        such as if that exceeds max length or has multiple marbles at a specific
-        time.
+        This rule exists for preventing unseen marbles are in the output
+        sequence, such as if it exceeds the maximum length or emit multiple
+        marbles at a specific time.
       </p>
       <p>
         This rule ensures that only visible marbles exist in the sequence.
@@ -182,13 +182,13 @@
         transformer work differently in specific cases.
       </p>
       <p>
-        This rule can occur with merge-related operators and concat-related
-        operators. The following figures are examples of situations in which the
-        rule applies, and the x-marked marble means the marble that is removed
-        by the rule.
+        This rule can be applied to merge-related operators, concat-related
+        operators, and <i>combineLatest</i> operator. The following pictures are
+        examples of situations in which the rule applies, and the x-marked
+        marble means the marble that is removed by the rule.
       </p>
       <br />
-      <p>The case it exceeds max length:</p>
+      <p>If the maximum length is exceeded:</p>
       <div class="example-picture">
         <div class="scaled">
           <rxp-sandbox
@@ -211,7 +211,7 @@
         </div>
       </div>
       <br />
-      <p>The case it has multiple marbles at a specific time:</p>
+      <p>If multiple marbles are emitted at a specific time:</p>
       <div class="example-picture">
         <div class="scaled">
           <rxp-sandbox
