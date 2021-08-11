@@ -223,7 +223,7 @@ export class MarbleSequenceComponent implements OnInit, OnChanges, OnDestroy {
     }
     const classList = event.item.element.nativeElement.classList;
     if (classList.contains('rxp-drop-outside')) {
-      return 'remove';
+      return dropList === event.previousContainer ? 'remove' : 'skip';
     }
     if (event.container === event.previousContainer) {
       return event.currentIndex === event.previousIndex ? 'skip' : 'sort';
