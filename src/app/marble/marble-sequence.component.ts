@@ -28,6 +28,8 @@ import { first } from 'rxjs/operators';
 import { Marble } from './marble.model';
 import { hasStyleTransition } from 'app/utils/has-style-transition';
 import { EMPTY } from 'rxjs';
+import { range } from 'lodash';
+
 @Component({
   selector: 'rxp-marble-sequence',
   templateUrl: './marble-sequence.component.html',
@@ -70,6 +72,10 @@ export class MarbleSequenceComponent implements OnInit, OnChanges, OnDestroy {
   get progressClipPath(): string {
     const percent = 100 - Math.min(Math.max(100 * this.progress, 0), 100);
     return `inset(0 ${percent.toFixed(2)}% 0 0)`;
+  }
+
+  get timelineScaleCounter(): number[] {
+    return range(this.marbles.length + 1);
   }
 
   @ViewChild(CdkDropList, { static: true })

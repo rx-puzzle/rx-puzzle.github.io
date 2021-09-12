@@ -1,6 +1,7 @@
 :host {
   --timeline-width: 3px;
   --arrowhead-size: 9px;
+  --drop-list-left: 3px;
 
   position: relative;
   display: flex;
@@ -44,6 +45,24 @@
   @include timeline(var(--theme-accent));
 }
 
+.timeline-scales {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  left: var(--drop-list-left);
+
+  > div {
+    height: var(--timeline-width);
+  }
+
+  > div > div {
+    width: 1px;
+    height: 100%;
+    background: var(--theme-background);
+    margin: 0 auto;
+  }
+}
+
 .end-marker {
   position: absolute;
   display: block;
@@ -64,7 +83,7 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  margin-left: 3px;
+  margin-left: var(--drop-list-left);
 }
 
 rxp-marble {

@@ -7,7 +7,14 @@
 <div class="timeline">
   <hr />
   <ng-container *ngTemplateOutlet="arrowHead"></ng-container>
+  <div class="timeline-scales">
+    <div *ngFor="let n of timelineScaleCounter" [style.width.px]="marbleSize">
+      <div></div>
+    </div>
+  </div>
 </div>
+
+<div #endMarker class="end-marker" [style.background]="timelineColor"></div>
 
 <div
   class="progress"
@@ -17,9 +24,12 @@
 >
   <hr [style.background]="timelineColor" />
   <ng-container *ngTemplateOutlet="arrowHead"></ng-container>
+  <div class="timeline-scales">
+    <div *ngFor="let n of timelineScaleCounter" [style.width.px]="marbleSize">
+      <div></div>
+    </div>
+  </div>
 </div>
-
-<div #endMarker class="end-marker" [style.background]="timelineColor"></div>
 
 <div
   cdkDropList
