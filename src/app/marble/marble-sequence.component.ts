@@ -162,6 +162,8 @@ export class MarbleSequenceComponent implements OnInit, OnChanges, OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.runPlaceholderExitTransition(event.item);
     });
+    const elem = event.item.getPlaceholderElement();
+    elem.classList.remove('should-remove');
   }
 
   onDropListDropped(event: CdkDragDrop<Marble[]>): void {
